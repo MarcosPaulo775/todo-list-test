@@ -1,10 +1,13 @@
-export interface Message {
-  message: string;
-}
-
-export interface Todo {
-  _id?: string;
+export interface TodoDto {
+  _id: string;
   todo: string;
   checked: boolean;
-  subTodo?: Todo[];
+  subTodo?: TodoDto[];
+}
+
+export interface TodoReducerState {
+  list: TodoDto[];
+
+  loading: boolean;
+  error: string | null;
 }

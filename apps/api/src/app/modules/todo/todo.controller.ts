@@ -1,15 +1,37 @@
-import { Controller, Get } from '@nestjs/common';
-
-import { Message } from '@teste/api-interfaces';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { TodoDto } from '@teste/api-interfaces';
 
 import { TodoService } from './todo.service';
 
-@Controller()
+@Controller('/todo')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
-  @Get('hello')
-  getData(): Message {
-    return this.todoService.getData();
+  @Post()
+  async create(@Body() todoDto: TodoDto): Promise<TodoDto> {
+    return await this.todoService.create(todoDto);
+  }
+
+  @Get()
+  async read(): Promise<TodoDto[]> {
+    return await this.todoService.read();
+  }
+
+  @Put()
+  async update(@Body() todoDto: TodoDto): Promise<TodoDto> {
+    return await this.todoService.update(todoDto._id, todoDto);
+  }
+
+  @Delete('/:_id')
+  async delete(@Param('_id') _id: string): Promise<boolean> {
+    return await this.todoService.delete(_id);
   }
 }
