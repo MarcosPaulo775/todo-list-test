@@ -1,0 +1,61 @@
+{
+  "name": "Angular + NestJS + MongoDB",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
+  "settings": {
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[scss]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true, // For ESLint
+      "source.fixAll.tslint": true, // For TSLint
+      "source.fixAll.stylelint": true // For Stylelint
+    },
+    "files.associations": {
+      "*.cfqflow": "json"
+    },
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "extensions": [
+    "angular.ng-template",
+    "esbenp.prettier-vscode",
+    "firsttris.vscode-jest-runner",
+    "dbaeumer.vscode-eslint",
+    "mikestead.dotenv",
+    "usernamehw.errorlens"
+  ],
+  "remoteUser": "node",
+  "features": {
+    "docker-from-docker": "latest",
+    "git": "latest"
+  },
+  "portsAttributes": {
+    "3333": {
+      "label": "Api"
+    },
+    "4200": {
+      "label": "Front"
+    }
+  }
+}

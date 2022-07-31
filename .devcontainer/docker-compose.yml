@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VARIANT: 18-bullseye
+    volumes:
+      - ..:/workspace:cached
+    env_file:
+      - .env
+    command: sleep infinity
+    networks:
+      - todo
+
+  mongo:
+    image: mongo:4
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${USERDB}
+      MONGO_INITDB_ROOT_PASSWORD: ${PASSDB}
+    ports:
+      - ${MONGO_PORT}:27017
+    volumes:
+      - mongo:/data/db
+    env_file:
+      - .env
+    networks:
+      - todo
+
+volumes:
+  mongo:
+
+networks:
+  todo:
+    driver: bridge
