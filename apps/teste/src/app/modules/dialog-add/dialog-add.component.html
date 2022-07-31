@@ -10,7 +10,7 @@
   </div>
   <div mat-dialog-actions style="display: flex; justify-content: space-between">
     <button mat-button (click)="onNoClick()">Cancelar</button>
-    <button mat-raised-button color="primary">
+    <button mat-raised-button color="primary" (click)="save()">
       {{ isEdit ? 'Atualizar' : 'Salvar' }}
     </button>
   </div>

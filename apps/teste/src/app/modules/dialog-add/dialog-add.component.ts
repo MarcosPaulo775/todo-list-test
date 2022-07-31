@@ -29,6 +29,10 @@ export class DialogAddComponent implements OnInit {
     }
   }
 
+  save() {
+    this.dialogRef.close(this.form.value);
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
