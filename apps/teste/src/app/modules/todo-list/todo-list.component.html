@@ -1,0 +1,13 @@
+<div class="grid">
+  <div class="container">
+    <ng-container *ngFor="let todo of list">
+      <teste-todo-card [todo]="todo"></teste-todo-card>
+    </ng-container>
+
+    <div style="display: flex; justify-content: center; margin-bottom: 65px">
+      <button mat-mini-fab color="primary" (click)="add()">
+        <mat-icon>plus_one</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

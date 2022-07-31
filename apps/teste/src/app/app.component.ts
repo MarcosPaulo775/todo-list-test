@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Message } from '@teste/api-interfaces';
+import { Message, Todo } from '@teste/api-interfaces';
 
 @Component({
   selector: 'teste-root',

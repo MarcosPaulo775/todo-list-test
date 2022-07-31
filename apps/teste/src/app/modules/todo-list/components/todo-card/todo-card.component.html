@@ -1,0 +1,29 @@
+<mat-card>
+  <div style="display: flex; gap: 15px; height: 40px; align-items: center">
+    <mat-checkbox [(ngModel)]="todo.checked"></mat-checkbox>
+    <div class="todo-text">
+      <span>{{ todo.todo }}</span>
+    </div>
+    <div style="display: flex; justify-content: flex-end">
+      <button mat-icon-button color="primary">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div
+    style="display: flex; flex-direction: column; gap: 10px; margin-left: 30px"
+  >
+    <ng-container *ngFor="let todo of todo.subTodo">
+      <teste-sub-todo-item [todo]="todo"></teste-sub-todo-item>
+    </ng-container>
+  </div>
+  <div style="display: flex; justify-content: start">
+    <button mat-icon-button color="primary">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</mat-card>
