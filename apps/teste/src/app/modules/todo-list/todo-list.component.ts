@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Todo } from '@teste/api-interfaces';
+import { TodoDto } from '@teste/api-interfaces';
 import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { DialogAddComponent } from '../dialog-add/dialog-add.component';
   styleUrls: ['./todo-list.component.scss'],
 })
 export class TodoListComponent {
-  list: Todo[] = [
+  list: TodoDto[] = [
     {
       todo: 'ab312312i312u312p3g12u3g21uy3g12uy3c',
       checked: false,

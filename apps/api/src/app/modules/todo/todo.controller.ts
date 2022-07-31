@@ -1,15 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
-
-import { Message } from '@teste/api-interfaces';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { TodoDto } from '@teste/api-interfaces';
 
 import { TodoService } from './todo.service';
 
-@Controller()
+@Controller('/todo')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
-  @Get('hello')
-  getData(): Message {
-    return this.todoService.getData();
+  @Post('create')
+  async create(@Body() todoDto: TodoDto): Promise<TodoDto> {
+    return await this.todoService.create(todoDto);
   }
 }

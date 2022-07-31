@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Message } from '@teste/api-interfaces';
+import { TodoDto } from '@teste/api-interfaces';
 import { Model } from 'mongoose';
 import { TodoDocument } from '../../shared/schema/todo.schema';
 
@@ -8,7 +8,9 @@ import { TodoDocument } from '../../shared/schema/todo.schema';
 export class TodoService {
   constructor(@InjectModel('todo') private todoModel: Model<TodoDocument>) {}
 
-  getData(): Message {
-    return { message: 'Welcome to api!' };
+  async create(todoDto: TodoDto): Promise<TodoDto> {
+    const objCreated = await this.todoModel.create(todoDto);
+
+    return objCreated.toObject();
   }
 }

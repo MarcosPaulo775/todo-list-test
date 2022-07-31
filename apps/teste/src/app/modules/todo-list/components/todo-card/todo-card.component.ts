@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Todo } from '@teste/api-interfaces';
+import { TodoDto } from '@teste/api-interfaces';
 
 @Component({
   selector: 'teste-todo-card',
@@ -7,5 +7,5 @@ import { Todo } from '@teste/api-interfaces';
   styleUrls: ['./todo-card.component.scss'],
 })
 export class TodoCardComponent {
-  @Input() todo!: Todo;
+  @Input() todo!: TodoDto;
 }

@@ -1,10 +1,6 @@
-export interface Message {
-  message: string;
-}
-
-export interface Todo {
+export interface TodoDto {
   _id?: string;
   todo: string;
   checked: boolean;
-  subTodo?: Todo[];
+  subTodo?: TodoDto[];
 }

@@ -12,8 +12,9 @@ services:
     env_file:
       - .env
     command: sleep infinity
-    networks:
-      - todo
+    network_mode: host
+    depends_on:
+      - mongo
 
   mongo:
     image: mongo:4
@@ -21,18 +22,11 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${USERDB}
       MONGO_INITDB_ROOT_PASSWORD: ${PASSDB}
-    ports:
-      - ${MONGO_PORT}:27017
     volumes:
       - mongo:/data/db
     env_file:
       - .env
-    networks:
-      - todo
+    network_mode: host
 
 volumes:
   mongo:
-
-networks:
-  todo:
-    driver: bridge

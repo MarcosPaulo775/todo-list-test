@@ -1,11 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
-import { Todo } from '@teste/api-interfaces';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TodoDto } from '@teste/api-interfaces';
 @Component({
   selector: 'teste-dialog-add',
   templateUrl: './dialog-add.component.html',
@@ -18,12 +14,12 @@ export class DialogAddComponent implements OnInit {
     _id: new FormControl(),
     todo: new FormControl(''),
     checked: new FormControl(false),
-    subTodo: new FormControl<Todo[]>([]),
+    subTodo: new FormControl<TodoDto[]>([]),
   });
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddComponent>,
-    @Inject(MAT_DIALOG_DATA) public data?: Todo
+    @Inject(MAT_DIALOG_DATA) public data?: TodoDto
   ) {}
 
   ngOnInit(): void {
