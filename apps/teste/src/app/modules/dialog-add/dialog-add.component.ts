@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TodoDto } from '@teste/api-interfaces';
 @Component({
@@ -11,8 +11,8 @@ export class DialogAddComponent implements OnInit {
   isEdit = false;
 
   form = new FormGroup({
-    _id: new FormControl(),
-    todo: new FormControl(''),
+    uuid: new FormControl(),
+    todo: new FormControl('', Validators.required),
     checked: new FormControl(false),
     subTodo: new FormControl<TodoDto[]>([]),
   });
@@ -23,6 +23,14 @@ export class DialogAddComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.dialogRef.keydownEvents().subscribe((event) => {
+      if (event?.key === 'Escape') {
+        this.dialogRef.close();
+      } else if (event?.key === 'Enter') {
+        this.save();
+      }
+    });
+
     if (this.data) {
       this.isEdit = true;
       this.form.patchValue(this.data);
@@ -30,7 +38,9 @@ export class DialogAddComponent implements OnInit {
   }
 
   save() {
-    this.dialogRef.close(this.form.value);
+    if (this.form.valid) {
+      this.dialogRef.close(this.form.value);
+    }
   }
 
   onNoClick(): void {

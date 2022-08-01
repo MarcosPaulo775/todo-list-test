@@ -28,8 +28,12 @@ export class TodoCardComponent implements OnInit, AfterViewInit {
     this.updateTodo();
   }
 
+  add() {
+    this.store.dispatch(TodoActions.dialogOpen({ key: this.todo.uuid }));
+  }
+
   deleteTodo() {
-    this.store.dispatch(TodoActions.delete({ _id: this.todo._id }));
+    this.store.dispatch(TodoActions.delete({ uuid: this.todo.uuid }));
   }
 
   editTodo() {
@@ -40,7 +44,7 @@ export class TodoCardComponent implements OnInit, AfterViewInit {
     this.checkForm.valueChanges.subscribe((value) => {
       this.store.dispatch(
         TodoActions.update({
-          _id: this.todo._id,
+          uuid: this.todo.uuid,
           todo: { ...this.todo, checked: value },
         })
       );

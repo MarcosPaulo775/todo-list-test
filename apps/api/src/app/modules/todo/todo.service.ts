@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { TodoDto } from '@teste/api-interfaces';
 import { Model, Types } from 'mongoose';
-import { TodoDocument } from '../../shared/schema/todo.schema';
+import { Todo, TodoDocument } from '../../shared/schema/todo.schema';
 
 @Injectable()
 export class TodoService {
@@ -21,40 +21,55 @@ export class TodoService {
     return objects.map((el) => this.todoDocumentToDto(el));
   }
 
-  async update(_id: string, todoDto: TodoDto): Promise<TodoDto> {
+  async update(uuid: string, todoDto: TodoDto): Promise<TodoDto> {
     await this.todoModel
       .updateOne(
         {
-          _id,
+          uuid,
         },
-        { $set: todoDto }
+        {
+          $set: {
+            todo: todoDto.todo,
+            checked: todoDto.checked,
+            subTodo: todoDto.subTodo,
+          },
+        }
       )
       .exec();
 
-    const objUpdated = await this.todoModel.findById(_id).exec();
+    const objUpdated = await this.todoModel.findOne({ uuid }).exec();
 
     return this.todoDocumentToDto(objUpdated);
   }
 
-  async delete(_id: string): Promise<boolean> {
+  async delete(uuid: string): Promise<boolean> {
     try {
-      await this.todoModel.deleteOne({ _id }).exec();
+      await this.todoModel.deleteOne({ uuid }).exec();
       return true;
     } catch (e) {
       return false;
     }
   }
 
+  subTodoToDto(todo: Todo[]) {
+    return todo.map((el) => {
+      return {
+        uuid: el.uuid,
+        todo: el.todo,
+        checked: el.checked,
+        subTodo: this.subTodoToDto(el.subTodo),
+      };
+    });
+  }
+
   todoDocumentToDto(todo: TodoDocument): TodoDto {
     const json = todo.toJSON();
 
     return {
-      _id: json._id,
+      uuid: json.uuid,
       todo: json.todo,
       checked: json.checked,
-      subTodo: json.subTodo.map((el: TodoDocument) =>
-        this.todoDocumentToDto(el)
-      ),
+      subTodo: this.subTodoToDto(json.subTodo),
     } as TodoDto;
   }
 }

@@ -2,10 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TodoDto, TodoReducerState } from '@teste/api-interfaces';
 import { catchError, map, mergeMap, of } from 'rxjs';
+import { v4 } from 'uuid';
 import { InteractiveService } from '../../../core/services/interactive.service';
 import { ConfirmService } from '../../../shared/components/confirm/confirm.service';
 import { DialogAddComponent } from '../../dialog-add/dialog-add.component';
@@ -44,13 +45,14 @@ export class TodoEffects {
         this.dialog
           .open(DialogAddComponent, {
             data: action.todo,
+            disableClose: true,
+            autoFocus: false,
           })
           .afterClosed()
           .pipe(
             map((resp?: TodoDto) => {
-              console.log(resp);
               if (resp) {
-                return TodoActions.dialogSave({ todo: resp });
+                return TodoActions.dialogSave({ todo: resp, key: action.key });
               }
               return TodoActions.dialogCancel();
             })
@@ -63,16 +65,31 @@ export class TodoEffects {
     this.actions$.pipe(
       ofType(TodoActions.dialogSave),
       map((action) => {
-        if (action.todo._id) {
-          return TodoActions.update({
-            _id: action.todo._id,
+        if (!action.key) {
+          if (action.todo.uuid) {
+            return TodoActions.update({
+              uuid: action.todo.uuid,
+              todo: action.todo,
+            });
+          }
+
+          return TodoActions.create({
+            todo: action.todo,
+          });
+        } else {
+          if (action.todo.uuid) {
+            return TodoActions.updateSubTodo({
+              key: action.key,
+              uuid: action.todo.uuid,
+              todo: action.todo,
+            });
+          }
+
+          return TodoActions.createSubTodo({
+            key: action.key,
             todo: action.todo,
           });
         }
-
-        return TodoActions.create({
-          todo: action.todo,
-        });
       })
     )
   );
@@ -81,7 +98,7 @@ export class TodoEffects {
     this.actions$.pipe(
       ofType(TodoActions.create),
       mergeMap((action) =>
-        this.todoListService.create(action.todo).pipe(
+        this.todoListService.create({ ...action.todo, uuid: v4() }).pipe(
           map((todo: TodoDto) => {
             this.interactiveService.openSnackBar('Criado com sucesso!');
             return TodoActions.createSuccess({ todo });
@@ -99,11 +116,20 @@ export class TodoEffects {
     )
   );
 
+  createSubTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.createSubTodo),
+      map((action) =>
+        TodoActions.createSubTodoSuccess({ todo: action.todo, key: action.key })
+      )
+    )
+  );
+
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoActions.update),
       mergeMap((action) =>
-        this.todoListService.update(action._id, action.todo).pipe(
+        this.todoListService.update(action.uuid, action.todo).pipe(
           map((todo: TodoDto) => {
             this.interactiveService.openSnackBar('Atualizado com sucesso!');
             return TodoActions.updateSuccess({ todo });
@@ -121,6 +147,15 @@ export class TodoEffects {
     )
   );
 
+  updateSubTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.updateSubTodo),
+      map((action) =>
+        TodoActions.updateSubTodoSuccess({ todo: action.todo, key: action.key })
+      )
+    )
+  );
+
   delete$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoActions.delete),
@@ -133,7 +168,7 @@ export class TodoEffects {
                 return TodoActions.deleteCancel();
               }
               return TodoActions.deleteConfirm({
-                _id: action._id,
+                uuid: action.uuid,
               });
             })
           )
@@ -145,11 +180,11 @@ export class TodoEffects {
     this.actions$.pipe(
       ofType(TodoActions.deleteConfirm),
       mergeMap((action) =>
-        this.todoListService.delete(action._id).pipe(
+        this.todoListService.delete(action.uuid).pipe(
           map(() => {
             this.interactiveService.openSnackBar('Deletado com sucesso!');
             return TodoActions.deleteSuccess({
-              _id: action._id,
+              uuid: action.uuid,
             });
           }),
           catchError((error: HttpErrorResponse) => {
@@ -163,5 +198,67 @@ export class TodoEffects {
         )
       )
     )
+  );
+
+  deleteSubTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.deleteSubTodo),
+      mergeMap((action) =>
+        this.confirmService
+          .open('Tem certeza que deseja deletar este item ?')
+          .pipe(
+            map((confirm) => {
+              if (!confirm) {
+                return TodoActions.deleteSubTodoCancel();
+              }
+              return TodoActions.deleteSubTodoSuccess({
+                key: action.key,
+                uuid: action.uuid,
+              });
+            })
+          )
+      )
+    )
+  );
+
+  createSubTodoSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.createSubTodoSuccess),
+      map((action) => TodoActions.selectTodoToUpdate({ key: action.key }))
+    )
+  );
+
+  updateSubTodoSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.updateSubTodoSuccess),
+      map((action) => TodoActions.selectTodoToUpdate({ key: action.key }))
+    )
+  );
+
+  deleteSubTodoSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.deleteSubTodoSuccess),
+      map((action) => TodoActions.selectTodoToUpdate({ key: action.key }))
+    )
+  );
+
+  selectTodoToUpdate$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TodoActions.selectTodoToUpdate),
+        concatLatestFrom(() => this.store.select(KeyTodoActions)),
+        map(([action, state]) => {
+          const list = state.list;
+          const key = action.key.split('/');
+
+          const index = list.findIndex((el) => el.uuid === key[0]);
+
+          if (index !== -1) {
+            const todo = list[index];
+            this.store.dispatch(TodoActions.update({ uuid: todo.uuid, todo }));
+          }
+        })
+      ),
+    { dispatch: false }
   );
 }
