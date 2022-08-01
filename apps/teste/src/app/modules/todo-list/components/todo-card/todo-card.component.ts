@@ -33,10 +33,6 @@ export class TodoCardComponent implements OnInit, AfterViewInit {
     this.store.dispatch(TodoActions.dialogOpen({ key: this.todo.uuid }));
   }
 
-  deleteTodo() {
-    this.store.dispatch(TodoActions.delete({ uuid: this.todo.uuid }));
-  }
-
   editTodo() {
     this.store.dispatch(TodoActions.dialogOpen({ todo: this.todo }));
   }
@@ -50,5 +46,9 @@ export class TodoCardComponent implements OnInit, AfterViewInit {
         })
       );
     });
+  }
+
+  deleteTodo() {
+    this.store.dispatch(TodoActions.delete({ uuid: this.todo.uuid }));
   }
 }

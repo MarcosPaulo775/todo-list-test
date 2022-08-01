@@ -30,8 +30,8 @@ export class TodoController {
     return await this.todoService.update(todoDto.uuid, todoDto);
   }
 
-  @Delete('/:_id')
-  async delete(@Param('_id') _id: string): Promise<boolean> {
-    return await this.todoService.delete(_id);
+  @Delete('/:uuid')
+  async delete(@Param('uuid') uuid: string): Promise<boolean> {
+    return await this.todoService.delete(uuid);
   }
 }

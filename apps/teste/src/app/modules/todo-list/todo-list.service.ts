@@ -18,14 +18,14 @@ export class TodoListService {
     return this.http.get<TodoDto[]>(this.baseUrl);
   }
 
-  update(_id: string, todoDto: TodoDto): Observable<TodoDto> {
+  update(uuid: string, todoDto: TodoDto): Observable<TodoDto> {
     return this.http.put<TodoDto>(this.baseUrl, {
       ...todoDto,
-      _id,
+      uuid,
     });
   }
 
-  delete(_id: string): Observable<boolean> {
-    return this.http.delete<boolean>(this.baseUrl + `/${_id}`);
+  delete(uuid: string): Observable<boolean> {
+    return this.http.delete<boolean>(this.baseUrl + `/${uuid}`);
   }
 }

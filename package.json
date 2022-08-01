@@ -6,9 +6,9 @@
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "dev": "nx run-many --target=serve --all --parallel",
-    "test": "nx run-many --target=test --projects=api --parallel --detectOpenHandles",
-    "test:cov": "nx run-many --target=test --projects=api --parallel --detectOpenHandles --coverage",
-    "test:reset": "nx run-many --target=test --projects=api --parallel --clearCache"
+    "test": "nx run-many --target=test --all --parallel --detectOpenHandles",
+    "test:cov": "nx run-many --target=test --all --parallel --detectOpenHandles --coverage",
+    "test:reset": "nx run-many --target=test --all --parallel --clearCache"
   },
   "private": true,
   "dependencies": {
@@ -60,6 +60,7 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
+    "ng-mocks": "^14.1.1",
     "cypress": "^10.2.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
