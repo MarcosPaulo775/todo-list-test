@@ -26,9 +26,9 @@ export class DialogAddComponent implements OnInit {
 
   ngOnInit(): void {
     this.dialogRef.keydownEvents().subscribe((event) => {
-      if (event?.key === 'Escape') {
+      if (event.key === 'Escape') {
         this.dialogRef.close();
-      } else if (event?.key === 'Enter') {
+      } else if (event.key === 'Enter') {
         this.save();
       }
     });

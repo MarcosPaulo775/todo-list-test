@@ -32,7 +32,7 @@ export class ConfirmComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub.add(
       this.dialogRef.keydownEvents().subscribe((event) => {
-        if (event?.key === 'Escape') {
+        if (event.key === 'Escape') {
           this.onNot();
         }
       })
