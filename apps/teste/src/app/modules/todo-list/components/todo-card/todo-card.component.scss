@@ -1,4 +1,23 @@
-.todo-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
+.todo-row {
+  display: flex;
+  gap: 15px;
+  height: 40px;
+  align-items: center;
+
+  .todo-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .todo-options {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.sub-todos-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 30px;
 }

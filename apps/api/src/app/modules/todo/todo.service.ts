@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { TodoDto } from '@teste/api-interfaces';
 import { Model, Types } from 'mongoose';
-import { Todo, TodoDocument } from '../../shared/schema/todo.schema';
+
+import { TodoDocument } from '../../shared/schema/todo.schema';
 
 @Injectable()
 export class TodoService {
@@ -38,38 +39,18 @@ export class TodoService {
       .exec();
 
     const objUpdated = await this.todoModel.findOne({ uuid }).exec();
-
     return this.todoDocumentToDto(objUpdated);
   }
 
   async delete(uuid: string): Promise<boolean> {
-    try {
-      await this.todoModel.deleteOne({ uuid }).exec();
-      return true;
-    } catch (e) {
-      return false;
-    }
+    const resp = await this.todoModel.deleteOne({ uuid }).exec();
+    return resp.deletedCount === 1;
   }
 
-  subTodoToDto(todo: Todo[]) {
-    return todo.map((el) => {
-      return {
-        uuid: el.uuid,
-        todo: el.todo,
-        checked: el.checked,
-        subTodo: this.subTodoToDto(el.subTodo),
-      };
-    });
-  }
-
+  /* istanbul ignore next */
   todoDocumentToDto(todo: TodoDocument): TodoDto {
-    const json = todo.toJSON();
-
-    return {
-      uuid: json.uuid,
-      todo: json.todo,
-      checked: json.checked,
-      subTodo: this.subTodoToDto(json.subTodo),
-    } as TodoDto;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _id, ...todoDto } = todo.toJSON();
+    return todoDto as TodoDto;
   }
 }

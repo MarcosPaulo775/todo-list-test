@@ -1,39 +1,45 @@
 <mat-card>
   <form>
-    <div style="display: flex; gap: 15px; height: 40px; align-items: center">
-      <mat-checkbox [formControl]="checkForm"></mat-checkbox>
+    <div class="todo-row">
+      <mat-checkbox [formControl]="checkForm" color="primary"></mat-checkbox>
       <div class="todo-text">
         <span>{{ todo.todo }}</span>
       </div>
-      <div style="display: flex; justify-content: flex-end">
-        <button mat-icon-button color="primary" (click)="editTodo()">
+      <div class="todo-options">
+        <button
+          mat-icon-button
+          color="primary"
+          matTooltip="Adicionar sub-tarefa"
+          (click)="add()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          color="primary"
+          matTooltip="Editar tarefa"
+          (click)="editTodo()"
+        >
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="deleteTodo()">
+        <button
+          mat-icon-button
+          color="warn"
+          matTooltip="Apagar tarefa"
+          (click)="deleteTodo()"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </div>
 
-    <div
-      style="
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-left: 30px;
-      "
-    >
+    <div class="sub-todos-grid">
       <ng-container *ngFor="let subTodo of todo.subTodo">
         <teste-sub-todo-item
           [todo]="subTodo"
           [key]="todo.uuid"
         ></teste-sub-todo-item>
       </ng-container>
-    </div>
-    <div style="display: flex; justify-content: start">
-      <button mat-icon-button color="primary" (click)="add()">
-        <mat-icon>add</mat-icon>
-      </button>
     </div>
   </form>
 </mat-card>

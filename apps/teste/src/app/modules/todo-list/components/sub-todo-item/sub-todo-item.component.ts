@@ -2,6 +2,7 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+
 import { TodoDto, TodoReducerState } from '@teste/api-interfaces';
 import { KeyTodoActions, TodoActions } from '../../store/todo.actions';
 
