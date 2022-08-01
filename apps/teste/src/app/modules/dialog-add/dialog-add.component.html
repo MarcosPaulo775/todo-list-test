@@ -2,14 +2,14 @@
   <h1 mat-dialog-title>
     {{ isEdit ? 'Editando Todo' : 'Novo Todo' }}
   </h1>
-  <div style="display: flex; flex-direction: column; gap: 10px">
-    <mat-form-field class="example-form-field" appearance="fill">
+  <div class="column">
+    <mat-form-field appearance="fill">
       <mat-label>Todo</mat-label>
       <input matInput type="text" formControlName="todo" />
       <mat-error> Este campo é <strong>obrigatorio!</strong> </mat-error>
     </mat-form-field>
   </div>
-  <div mat-dialog-actions style="display: flex; justify-content: space-between">
+  <div mat-dialog-actions class="row-space-between">
     <button mat-raised-button color="primary" (click)="save()">
       {{ isEdit ? 'Atualizar' : 'Salvar' }}
     </button>

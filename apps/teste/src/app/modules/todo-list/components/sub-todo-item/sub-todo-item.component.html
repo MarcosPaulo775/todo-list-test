@@ -1,34 +1,34 @@
-<div style="border: 1px solid #d9d8d8; padding: 10px; border-radius: 5px">
-  <div style="display: flex; gap: 15px; height: 40px; align-items: center">
-    <mat-checkbox [formControl]="checkForm"></mat-checkbox>
-    <div class="todo-text">
-      <span>{{ todo.todo }}</span>
-    </div>
-    <div style="display: flex; justify-content: flex-end">
-      <button mat-icon-button color="primary" (click)="editTodo()">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="deleteTodo()">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
+<div class="todo-row">
+  <mat-checkbox [formControl]="checkForm" color="primary"></mat-checkbox>
+  <div class="todo-text">
+    <span>{{ todo.todo }}</span>
   </div>
-
-  <div style="display: flex; flex-direction: column; gap: 10px">
-    <ng-container *ngFor="let subTodo of todo.subTodo">
-      <teste-sub-todo-item
-        [todo]="subTodo"
-        [key]="key + '/' + todo.uuid"
-      ></teste-sub-todo-item>
-      <!--
-
-  <teste-todo-card [todo]="subTodo" [key]="key + todo.uuid"></teste-todo-card>
--->
-    </ng-container>
-  </div>
-  <div style="display: flex; justify-content: start">
-    <button mat-icon-button color="primary" (click)="add()">
-      <mat-icon>add</mat-icon>
+  <div class="todo-options">
+    <button mat-icon-button matTooltip="Ações" [matMenuTriggerFor]="menu">
+      <mat-icon>expand_more</mat-icon>
     </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="add()">
+        <mat-icon color="primary">add</mat-icon>
+        <span>Adicionar sub-tarefa</span>
+      </button>
+      <button mat-menu-item (click)="editTodo()">
+        <mat-icon color="primary">edit</mat-icon>
+        <span>Editar tarefa</span>
+      </button>
+      <button mat-menu-item (click)="deleteTodo()">
+        <mat-icon color="warn">delete</mat-icon>
+        <span>Apagar tarefa</span>
+      </button>
+    </mat-menu>
   </div>
+</div>
+
+<div class="sub-todos-grid">
+  <ng-container *ngFor="let subTodo of todo.subTodo">
+    <teste-sub-todo-item
+      [todo]="subTodo"
+      [key]="key + '/' + todo.uuid"
+    ></teste-sub-todo-item>
+  </ng-container>
 </div>

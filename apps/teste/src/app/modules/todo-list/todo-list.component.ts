@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+
 import { TodoReducerState } from '@teste/api-interfaces';
-import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 import { KeyTodoActions, TodoActions } from './store/todo.actions';
 
 @Component({
