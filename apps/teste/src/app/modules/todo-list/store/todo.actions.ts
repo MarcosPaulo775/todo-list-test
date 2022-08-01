@@ -10,6 +10,10 @@ enum TodoActionsType {
   createSuccess = '[todo] create success',
   createFailed = '[todo] create failed',
 
+  createSubTodo = '[todo] create subTodo',
+  createSubTodoSuccess = '[todo] create subTodo success',
+  createSubTodoFailed = '[todo] create subTodo failed',
+
   read = '[todo] read',
   readSuccess = '[todo] read success',
   readFailed = '[todo] read failed',
@@ -18,11 +22,23 @@ enum TodoActionsType {
   updateSuccess = '[todo] update success',
   updateFailed = '[todo] update failed',
 
+  updateSubTodo = '[todo] update subTodo',
+  updateSubTodoSuccess = '[todo] update subTodo success',
+  updateSubTodoFailed = '[todo] update subTodo failed',
+
   delete = '[todo] delete',
   deleteConfirm = '[todo] delete confirm',
   deleteCancel = '[todo] delete cancel',
   deleteSuccess = '[todo] delete success',
   deleteFailure = '[todo] delete failure',
+
+  deleteSubTodo = '[todo] delete subTodo',
+  deleteSubTodoConfirm = '[todo] delete subTodo confirm',
+  deleteSubTodoCancel = '[todo] delete subTodo cancel',
+  deleteSubTodoSuccess = '[todo] delete subTodo success',
+  deleteSubTodoFailure = '[todo] delete subTodo failure',
+
+  selectTodoToUpdate = '[todo] select todo to update',
 
   reset = '[todo] reset',
 }
@@ -31,11 +47,11 @@ export const KeyTodoActions = 'todo';
 export const TodoActions = {
   dialogOpen: createAction(
     TodoActionsType.dialogOpen,
-    props<{ todo?: TodoDto }>()
+    props<{ key?: string; todo?: TodoDto }>()
   ),
   dialogSave: createAction(
     TodoActionsType.dialogSave,
-    props<{ todo: TodoDto }>()
+    props<{ key?: string; todo: TodoDto }>()
   ),
   dialogCancel: createAction(TodoActionsType.dialogCancel),
 
@@ -46,6 +62,19 @@ export const TodoActions = {
   ),
   createFailed: createAction(
     TodoActionsType.createFailed,
+    props<{ error: string }>()
+  ),
+
+  createSubTodo: createAction(
+    TodoActionsType.createSubTodo,
+    props<{ key: string; todo: TodoDto }>()
+  ),
+  createSubTodoSuccess: createAction(
+    TodoActionsType.createSubTodoSuccess,
+    props<{ key: string; todo: TodoDto }>()
+  ),
+  createSubTodoFailed: createAction(
+    TodoActionsType.createSubTodoFailed,
     props<{ error: string }>()
   ),
 
@@ -61,7 +90,7 @@ export const TodoActions = {
 
   update: createAction(
     TodoActionsType.update,
-    props<{ _id: string; todo: TodoDto }>()
+    props<{ uuid: string; todo: TodoDto }>()
   ),
   updateSuccess: createAction(
     TodoActionsType.updateSuccess,
@@ -72,19 +101,55 @@ export const TodoActions = {
     props<{ error: string }>()
   ),
 
-  delete: createAction(TodoActionsType.delete, props<{ _id: string }>()),
+  updateSubTodo: createAction(
+    TodoActionsType.updateSubTodo,
+    props<{ key: string; uuid: string; todo: TodoDto }>()
+  ),
+  updateSubTodoSuccess: createAction(
+    TodoActionsType.updateSubTodoSuccess,
+    props<{ key: string; todo: TodoDto }>()
+  ),
+  updateSubTodoFailed: createAction(
+    TodoActionsType.updateSubTodoFailed,
+    props<{ key: string; error: string }>()
+  ),
+
+  delete: createAction(TodoActionsType.delete, props<{ uuid: string }>()),
   deleteConfirm: createAction(
     TodoActionsType.deleteConfirm,
-    props<{ _id: string }>()
+    props<{ uuid: string }>()
   ),
   deleteCancel: createAction(TodoActionsType.deleteCancel),
   deleteSuccess: createAction(
     TodoActionsType.deleteSuccess,
-    props<{ _id: string }>()
+    props<{ uuid: string }>()
   ),
   deleteFailure: createAction(
     TodoActionsType.deleteFailure,
     props<{ error: string }>()
+  ),
+
+  deleteSubTodo: createAction(
+    TodoActionsType.deleteSubTodo,
+    props<{ key: string; uuid: string }>()
+  ),
+  deleteSubTodoConfirm: createAction(
+    TodoActionsType.deleteSubTodoConfirm,
+    props<{ key: string; uuid: string }>()
+  ),
+  deleteSubTodoCancel: createAction(TodoActionsType.deleteSubTodoCancel),
+  deleteSubTodoSuccess: createAction(
+    TodoActionsType.deleteSubTodoSuccess,
+    props<{ key: string; uuid: string }>()
+  ),
+  deleteSubTodoFailure: createAction(
+    TodoActionsType.deleteSubTodoFailure,
+    props<{ error: string }>()
+  ),
+
+  selectTodoToUpdate: createAction(
+    TodoActionsType.selectTodoToUpdate,
+    props<{ key: string }>()
   ),
 
   reset: createAction(TodoActionsType.reset),

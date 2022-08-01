@@ -1,26 +1,33 @@
 <div style="border: 1px solid #d9d8d8; padding: 10px; border-radius: 5px">
   <div style="display: flex; gap: 15px; height: 40px; align-items: center">
-    <mat-checkbox [(ngModel)]="todo.checked"></mat-checkbox>
+    <mat-checkbox [formControl]="checkForm"></mat-checkbox>
     <div class="todo-text">
       <span>{{ todo.todo }}</span>
     </div>
     <div style="display: flex; justify-content: flex-end">
-      <button mat-icon-button color="primary">
+      <button mat-icon-button color="primary" (click)="editTodo()">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button color="warn">
+      <button mat-icon-button color="warn" (click)="deleteTodo()">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
   </div>
 
   <div style="display: flex; flex-direction: column; gap: 10px">
-    <ng-container *ngFor="let todo of todo.subTodo">
-      <teste-todo-card [todo]="todo"></teste-todo-card>
+    <ng-container *ngFor="let subTodo of todo.subTodo">
+      <teste-sub-todo-item
+        [todo]="subTodo"
+        [key]="key + '/' + todo.uuid"
+      ></teste-sub-todo-item>
+      <!--
+
+  <teste-todo-card [todo]="subTodo" [key]="key + todo.uuid"></teste-todo-card>
+-->
     </ng-container>
   </div>
   <div style="display: flex; justify-content: start">
-    <button mat-icon-button color="primary">
+    <button mat-icon-button color="primary" (click)="add()">
       <mat-icon>add</mat-icon>
     </button>
   </div>

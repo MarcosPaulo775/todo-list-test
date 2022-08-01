@@ -27,7 +27,7 @@ export class TodoController {
 
   @Put()
   async update(@Body() todoDto: TodoDto): Promise<TodoDto> {
-    return await this.todoService.update(todoDto._id, todoDto);
+    return await this.todoService.update(todoDto.uuid, todoDto);
   }
 
   @Delete('/:_id')

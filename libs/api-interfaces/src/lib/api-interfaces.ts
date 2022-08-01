@@ -1,8 +1,8 @@
 export interface TodoDto {
-  _id: string;
+  uuid: string;
   todo: string;
   checked: boolean;
-  subTodo?: TodoDto[];
+  subTodo: TodoDto[];
 }
 
 export interface TodoReducerState {

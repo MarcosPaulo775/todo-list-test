@@ -23,12 +23,15 @@
         margin-left: 30px;
       "
     >
-      <ng-container *ngFor="let todo of todo.subTodo">
-        <teste-sub-todo-item [todo]="todo"></teste-sub-todo-item>
+      <ng-container *ngFor="let subTodo of todo.subTodo">
+        <teste-sub-todo-item
+          [todo]="subTodo"
+          [key]="todo.uuid"
+        ></teste-sub-todo-item>
       </ng-container>
     </div>
     <div style="display: flex; justify-content: start">
-      <button mat-icon-button color="primary">
+      <button mat-icon-button color="primary" (click)="add()">
         <mat-icon>add</mat-icon>
       </button>
     </div>
